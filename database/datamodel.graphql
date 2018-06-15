@@ -3,4 +3,13 @@ type Link {
   createdAt: DateTime!
   description: String!
   url: String!
+  postedBy: User
+}
+
+type User {
+  id: ID! @unique
+  name: String!
+  email: String! @unigue
+  password: String!
+  links: [Link!]!
 }

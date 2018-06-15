@@ -1,8 +1,8 @@
 # The service name, this will be part of the endpoint of the Prisma API
-#service: games-node
+service: games-node
 
 # The deployment stage, this will also be part of the API endpoint
-#stage: dev
+stage: dev
 
 # Points to the file that holds your data model
 datamodel: datamodel.graphql
@@ -10,5 +10,5 @@ datamodel: datamodel.graphql
 # You can only access the API when providing JWTs that are signed with this secret
 secret: mytotalbrutalimportantsecretomgwtfbbq
 
-#cluster: lukas-pospisil-2c7306/prisma-eu1
+cluster: lukas-pospisil-2c7306/prisma-eu1
 endpoint: https://eu1.prisma.sh/lukas-pospisil-2c7306/games-node/dev
