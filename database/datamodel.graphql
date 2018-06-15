@@ -9,7 +9,7 @@ type Link {
 type User {
   id: ID! @unique
   name: String!
-  email: String! @unigue
+  email: String! @unique
   password: String!
   links: [Link!]!
 }
