@@ -3,7 +3,17 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "dev": "node src/index.js | graphql playground",
+    "prisma:deploy": "prisma deploy",
+    "prisma:info": "prisma info"
+  },
   "dependencies": {
-    "graphql-yoga": "^1.14.0"
+    "graphql-yoga": "^1.14.0",
+    "prisma-binding": "^2.1.0"
+  },
+  "devDependencies": {
+    "graphql-cli": "^2.16.3",
+    "prisma": "1.6.3"
   }
 }
