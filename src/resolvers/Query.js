@@ -9,7 +9,7 @@ function feed(root, args, context, info) {
     : {}
 
   return context.db.query.links(
-    { where, skip: args.skip, first: args.first },
+    { where, skip: args.skip, first: args.first, orderBy: args.orderBy },
     info,
   )
 }
