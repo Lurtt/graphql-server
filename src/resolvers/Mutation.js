@@ -72,9 +72,75 @@ async function vote(parent, args, context, info) {
   )
 }
 
+async function favorite(parent, args, context, info) {
+  const userId = getUserId(context)
+
+  const gameExists = await context.db.exists.Favorite({
+    user: { id: userId },
+    game: { id: args.gameId },
+  })
+  if (gameExists) {
+    throw new Error(`Already voted for this game: ${args.gameId}`)
+  }
+
+  return context.db.mutation.createFavorite(
+    {
+      data: {
+        user: { connect: { id: userId } },
+        game: { connect: { id: args.gameId } },
+      },
+    },
+    info,
+  )
+}
+
+async function postGame(parent, args, context, info) {
+  const userId = getUserId(context)
+
+  return context.db.mutation.createGame(
+    {
+      data: {
+        name: args.name,
+        description: args.description,
+        url: args.url,
+        postedBy: { connect: { id: userId } },
+      },
+    },
+    info,
+  )
+}
+
+async function updateGame(parent, args, context, info) {
+  const userId = getUserId(context)
+
+  return context.db.mutation.updateGame(
+    {
+      where: {
+        id: args.id
+      },
+      data: {
+        name: args.name,
+        description: args.description,
+        url: args.url,
+      },
+      info,
+    }
+  )
+}
+
+async function deleteGame(parent, args, context, info) {
+  const userId = getUserId(context)
+
+  return context.db.mutation.deleteGame({ where: { id: args.id } }, info)
+}
+
 module.exports = {
   signup,
   login,
   post,
   vote,
+  postGame,
+  updateGame,
+  deleteGame,
+  favorite,
 }

@@ -7,6 +7,17 @@ type Link {
   votes: [Vote!]!
 }
 
+type Game {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  description: String
+  url: String
+  postedBy: User
+  favorite: [Favorite!]!
+}
+
 type User {
   id: ID! @unique
   name: String!
@@ -14,10 +25,18 @@ type User {
   password: String!
   links: [Link!]!
   votes: [Vote!]!
+  games: [Game!]!
+  favorite: [Favorite!]!
 }
 
 type Vote {
   id: ID! @unique
   link: Link!
+  user: User!
+}
+
+type Favorite {
+  id: ID! @unique
+  game: Game!
   user: User!
 }

@@ -1,8 +1,8 @@
-# import Link, LinkSubscriptionPayload, Vote, VoteSubscriptionPayload, LinkOrderByInput from "./generated/prisma.graphql"
+# import Link, Game, LinkSubscriptionPayload, Vote, VoteSubscriptionPayload, LinkOrderByInput, GameOrderByInput, Favorite from "./generated/prisma.graphql"
 
 type Query {
-  info: String!
   feed(filter: String, skip: Int, first: Int, orderBy: LinkOrderByInput): Feed!
+  games(filter: String, skip: Int, first: Int, orderBy: GameOrderByInput): [Game!]!
 }
 
 type Mutation {
@@ -10,6 +10,10 @@ type Mutation {
   signup(email: String!, password: String!, name: String!): AuthPayload
   login(email: String!, password: String!): AuthPayload
   vote(linkId: ID!): Vote
+  postGame(name: String!, description: String, url: String): Game!
+  updateGame(id: ID!, name: String, description: String, url: String): Game!
+  deleteGame(id: ID!): Game!
+  favorite(gameId: ID!): Favorite
 }
 
 type Subscription {
