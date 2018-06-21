@@ -1,26 +1,26 @@
-function newLinkSubscribe (parent, args, context, info) {
-  return context.db.subscription.link(
+function newGameSubscribe(parent, args, context, info) {
+  return context.db.subscription.game(
     { where: { mutation_in: ['CREATED'] } },
     info,
   )
 }
 
-const newLink = {
-  subscribe: newLinkSubscribe
+const newGame = {
+  subscribe: newGameSubscribe
 }
 
-function newVoteSubscribe (parent, args, context, info) {
-  return context.db.subscription.vote(
+function newFavoriteSubscribe(parent, args, context, info) {
+  return context.db.subscription.favorite(
     { where: { mutation_in: ['CREATED'] } },
     info,
   )
 }
 
-const newVote = {
-  subscribe: newVoteSubscribe
+const newFavorite = {
+  subscribe: newFavoriteSubscribe
 }
 
 module.exports = {
-  newLink,
-  newVote,
+  newGame,
+  newFavorite,
 }
