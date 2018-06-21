@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "node src/index.js | graphql playground",
+    "start": "node src/index.js | graphql playground",
     "prisma:deploy": "prisma deploy",
     "prisma:info": "prisma info"
   },
