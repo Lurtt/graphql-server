@@ -22,20 +22,11 @@ type Game implements Node {
   favorite(where: FavoriteWhereInput, orderBy: FavoriteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Favorite!]
 }
 
-type Link implements Node {
-  id: ID!
-  createdAt: DateTime!
-  description: String!
-  url: String!
-  postedBy(where: UserWhereInput): User
-}
-
 type User implements Node {
   id: ID!
   name: String!
   email: String!
   password: String!
-  links(where: LinkWhereInput, orderBy: LinkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Link!]
   games(where: GameWhereInput, orderBy: GameOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Game!]
   favorite(where: FavoriteWhereInput, orderBy: FavoriteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Favorite!]
 }
@@ -50,10 +41,6 @@ type AggregateFavorite {
 }
 
 type AggregateGame {
-  count: Int!
-}
-
-type AggregateLink {
   count: Int!
 }
 
@@ -774,376 +761,27 @@ input GameWhereUniqueInput {
 }
 
 """
-A connection to a list of items.
-"""
-type LinkConnection {
-  """
-  Information to aid in pagination.
-  """
-  pageInfo: PageInfo!
-  """
-  A list of edges.
-  """
-  edges: [LinkEdge]!
-  aggregate: AggregateLink!
-}
-
-input LinkCreateInput {
-  description: String!
-  url: String!
-  postedBy: UserCreateOneWithoutLinksInput
-}
-
-input LinkCreateManyWithoutPostedByInput {
-  create: [LinkCreateWithoutPostedByInput!]
-  connect: [LinkWhereUniqueInput!]
-}
-
-input LinkCreateWithoutPostedByInput {
-  description: String!
-  url: String!
-}
-
-"""
-An edge in a connection.
-"""
-type LinkEdge {
-  """
-  The item at the end of the edge.
-  """
-  node: Link!
-  """
-  A cursor for use in pagination.
-  """
-  cursor: String!
-}
-
-enum LinkOrderByInput {
-  id_ASC
-  id_DESC
-  createdAt_ASC
-  createdAt_DESC
-  description_ASC
-  description_DESC
-  url_ASC
-  url_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-}
-
-type LinkPreviousValues {
-  id: ID!
-  createdAt: DateTime!
-  description: String!
-  url: String!
-}
-
-type LinkSubscriptionPayload {
-  mutation: MutationType!
-  node: Link
-  updatedFields: [String!]
-  previousValues: LinkPreviousValues
-}
-
-input LinkSubscriptionWhereInput {
-  """
-  Logical AND on all given filters.
-  """
-  AND: [LinkSubscriptionWhereInput!]
-  """
-  Logical OR on all given filters.
-  """
-  OR: [LinkSubscriptionWhereInput!]
-  """
-  Logical NOT on all given filters combined by AND.
-  """
-  NOT: [LinkSubscriptionWhereInput!]
-  """
-  The subscription event gets dispatched when it's listed in mutation_in
-  """
-  mutation_in: [MutationType!]
-  """
-  The subscription event gets only dispatched when one of the updated fields names is included in this list
-  """
-  updatedFields_contains: String
-  """
-  The subscription event gets only dispatched when all of the field names included in this list have been updated
-  """
-  updatedFields_contains_every: [String!]
-  """
-  The subscription event gets only dispatched when some of the field names included in this list have been updated
-  """
-  updatedFields_contains_some: [String!]
-  node: LinkWhereInput
-}
-
-input LinkUpdateInput {
-  description: String
-  url: String
-  postedBy: UserUpdateOneWithoutLinksInput
-}
-
-input LinkUpdateManyWithoutPostedByInput {
-  create: [LinkCreateWithoutPostedByInput!]
-  connect: [LinkWhereUniqueInput!]
-  disconnect: [LinkWhereUniqueInput!]
-  delete: [LinkWhereUniqueInput!]
-  update: [LinkUpdateWithWhereUniqueWithoutPostedByInput!]
-  upsert: [LinkUpsertWithWhereUniqueWithoutPostedByInput!]
-}
-
-input LinkUpdateWithoutPostedByDataInput {
-  description: String
-  url: String
-}
-
-input LinkUpdateWithWhereUniqueWithoutPostedByInput {
-  where: LinkWhereUniqueInput!
-  data: LinkUpdateWithoutPostedByDataInput!
-}
-
-input LinkUpsertWithWhereUniqueWithoutPostedByInput {
-  where: LinkWhereUniqueInput!
-  update: LinkUpdateWithoutPostedByDataInput!
-  create: LinkCreateWithoutPostedByInput!
-}
-
-input LinkWhereInput {
-  """
-  Logical AND on all given filters.
-  """
-  AND: [LinkWhereInput!]
-  """
-  Logical OR on all given filters.
-  """
-  OR: [LinkWhereInput!]
-  """
-  Logical NOT on all given filters combined by AND.
-  """
-  NOT: [LinkWhereInput!]
-  id: ID
-  """
-  All values that are not equal to given value.
-  """
-  id_not: ID
-  """
-  All values that are contained in given list.
-  """
-  id_in: [ID!]
-  """
-  All values that are not contained in given list.
-  """
-  id_not_in: [ID!]
-  """
-  All values less than the given value.
-  """
-  id_lt: ID
-  """
-  All values less than or equal the given value.
-  """
-  id_lte: ID
-  """
-  All values greater than the given value.
-  """
-  id_gt: ID
-  """
-  All values greater than or equal the given value.
-  """
-  id_gte: ID
-  """
-  All values containing the given string.
-  """
-  id_contains: ID
-  """
-  All values not containing the given string.
-  """
-  id_not_contains: ID
-  """
-  All values starting with the given string.
-  """
-  id_starts_with: ID
-  """
-  All values not starting with the given string.
-  """
-  id_not_starts_with: ID
-  """
-  All values ending with the given string.
-  """
-  id_ends_with: ID
-  """
-  All values not ending with the given string.
-  """
-  id_not_ends_with: ID
-  createdAt: DateTime
-  """
-  All values that are not equal to given value.
-  """
-  createdAt_not: DateTime
-  """
-  All values that are contained in given list.
-  """
-  createdAt_in: [DateTime!]
-  """
-  All values that are not contained in given list.
-  """
-  createdAt_not_in: [DateTime!]
-  """
-  All values less than the given value.
-  """
-  createdAt_lt: DateTime
-  """
-  All values less than or equal the given value.
-  """
-  createdAt_lte: DateTime
-  """
-  All values greater than the given value.
-  """
-  createdAt_gt: DateTime
-  """
-  All values greater than or equal the given value.
-  """
-  createdAt_gte: DateTime
-  description: String
-  """
-  All values that are not equal to given value.
-  """
-  description_not: String
-  """
-  All values that are contained in given list.
-  """
-  description_in: [String!]
-  """
-  All values that are not contained in given list.
-  """
-  description_not_in: [String!]
-  """
-  All values less than the given value.
-  """
-  description_lt: String
-  """
-  All values less than or equal the given value.
-  """
-  description_lte: String
-  """
-  All values greater than the given value.
-  """
-  description_gt: String
-  """
-  All values greater than or equal the given value.
-  """
-  description_gte: String
-  """
-  All values containing the given string.
-  """
-  description_contains: String
-  """
-  All values not containing the given string.
-  """
-  description_not_contains: String
-  """
-  All values starting with the given string.
-  """
-  description_starts_with: String
-  """
-  All values not starting with the given string.
-  """
-  description_not_starts_with: String
-  """
-  All values ending with the given string.
-  """
-  description_ends_with: String
-  """
-  All values not ending with the given string.
-  """
-  description_not_ends_with: String
-  url: String
-  """
-  All values that are not equal to given value.
-  """
-  url_not: String
-  """
-  All values that are contained in given list.
-  """
-  url_in: [String!]
-  """
-  All values that are not contained in given list.
-  """
-  url_not_in: [String!]
-  """
-  All values less than the given value.
-  """
-  url_lt: String
-  """
-  All values less than or equal the given value.
-  """
-  url_lte: String
-  """
-  All values greater than the given value.
-  """
-  url_gt: String
-  """
-  All values greater than or equal the given value.
-  """
-  url_gte: String
-  """
-  All values containing the given string.
-  """
-  url_contains: String
-  """
-  All values not containing the given string.
-  """
-  url_not_contains: String
-  """
-  All values starting with the given string.
-  """
-  url_starts_with: String
-  """
-  All values not starting with the given string.
-  """
-  url_not_starts_with: String
-  """
-  All values ending with the given string.
-  """
-  url_ends_with: String
-  """
-  All values not ending with the given string.
-  """
-  url_not_ends_with: String
-  postedBy: UserWhereInput
-}
-
-input LinkWhereUniqueInput {
-  id: ID
-}
-
-"""
 The `Long` scalar type represents non-fractional signed whole numeric values.
 Long can represent values between -(2^63) and 2^63 - 1.
 """
 scalar Long
 
 type Mutation {
-  createLink(data: LinkCreateInput!): Link!
   createGame(data: GameCreateInput!): Game!
   createUser(data: UserCreateInput!): User!
   createFavorite(data: FavoriteCreateInput!): Favorite!
-  updateLink(data: LinkUpdateInput!, where: LinkWhereUniqueInput!): Link
   updateGame(data: GameUpdateInput!, where: GameWhereUniqueInput!): Game
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateFavorite(data: FavoriteUpdateInput!, where: FavoriteWhereUniqueInput!): Favorite
-  deleteLink(where: LinkWhereUniqueInput!): Link
   deleteGame(where: GameWhereUniqueInput!): Game
   deleteUser(where: UserWhereUniqueInput!): User
   deleteFavorite(where: FavoriteWhereUniqueInput!): Favorite
-  upsertLink(where: LinkWhereUniqueInput!, create: LinkCreateInput!, update: LinkUpdateInput!): Link!
   upsertGame(where: GameWhereUniqueInput!, create: GameCreateInput!, update: GameUpdateInput!): Game!
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   upsertFavorite(where: FavoriteWhereUniqueInput!, create: FavoriteCreateInput!, update: FavoriteUpdateInput!): Favorite!
-  updateManyLinks(data: LinkUpdateInput!, where: LinkWhereInput): BatchPayload!
   updateManyGames(data: GameUpdateInput!, where: GameWhereInput): BatchPayload!
   updateManyUsers(data: UserUpdateInput!, where: UserWhereInput): BatchPayload!
   updateManyFavorites(data: FavoriteUpdateInput!, where: FavoriteWhereInput): BatchPayload!
-  deleteManyLinks(where: LinkWhereInput): BatchPayload!
   deleteManyGames(where: GameWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
   deleteManyFavorites(where: FavoriteWhereInput): BatchPayload!
@@ -1188,15 +826,12 @@ type PageInfo {
 }
 
 type Query {
-  links(where: LinkWhereInput, orderBy: LinkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Link]!
   games(where: GameWhereInput, orderBy: GameOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Game]!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   favorites(where: FavoriteWhereInput, orderBy: FavoriteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Favorite]!
-  link(where: LinkWhereUniqueInput!): Link
   game(where: GameWhereUniqueInput!): Game
   user(where: UserWhereUniqueInput!): User
   favorite(where: FavoriteWhereUniqueInput!): Favorite
-  linksConnection(where: LinkWhereInput, orderBy: LinkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): LinkConnection!
   gamesConnection(where: GameWhereInput, orderBy: GameOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): GameConnection!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
   favoritesConnection(where: FavoriteWhereInput, orderBy: FavoriteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FavoriteConnection!
@@ -1210,7 +845,6 @@ type Query {
 }
 
 type Subscription {
-  link(where: LinkSubscriptionWhereInput): LinkSubscriptionPayload
   game(where: GameSubscriptionWhereInput): GameSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
   favorite(where: FavoriteSubscriptionWhereInput): FavoriteSubscriptionPayload
@@ -1235,7 +869,6 @@ input UserCreateInput {
   name: String!
   email: String!
   password: String!
-  links: LinkCreateManyWithoutPostedByInput
   games: GameCreateManyWithoutPostedByInput
   favorite: FavoriteCreateManyWithoutUserInput
 }
@@ -1250,16 +883,10 @@ input UserCreateOneWithoutGamesInput {
   connect: UserWhereUniqueInput
 }
 
-input UserCreateOneWithoutLinksInput {
-  create: UserCreateWithoutLinksInput
-  connect: UserWhereUniqueInput
-}
-
 input UserCreateWithoutFavoriteInput {
   name: String!
   email: String!
   password: String!
-  links: LinkCreateManyWithoutPostedByInput
   games: GameCreateManyWithoutPostedByInput
 }
 
@@ -1267,15 +894,6 @@ input UserCreateWithoutGamesInput {
   name: String!
   email: String!
   password: String!
-  links: LinkCreateManyWithoutPostedByInput
-  favorite: FavoriteCreateManyWithoutUserInput
-}
-
-input UserCreateWithoutLinksInput {
-  name: String!
-  email: String!
-  password: String!
-  games: GameCreateManyWithoutPostedByInput
   favorite: FavoriteCreateManyWithoutUserInput
 }
 
@@ -1358,7 +976,6 @@ input UserUpdateInput {
   name: String
   email: String
   password: String
-  links: LinkUpdateManyWithoutPostedByInput
   games: GameUpdateManyWithoutPostedByInput
   favorite: FavoriteUpdateManyWithoutUserInput
 }
@@ -1380,20 +997,10 @@ input UserUpdateOneWithoutGamesInput {
   upsert: UserUpsertWithoutGamesInput
 }
 
-input UserUpdateOneWithoutLinksInput {
-  create: UserCreateWithoutLinksInput
-  connect: UserWhereUniqueInput
-  disconnect: Boolean
-  delete: Boolean
-  update: UserUpdateWithoutLinksDataInput
-  upsert: UserUpsertWithoutLinksInput
-}
-
 input UserUpdateWithoutFavoriteDataInput {
   name: String
   email: String
   password: String
-  links: LinkUpdateManyWithoutPostedByInput
   games: GameUpdateManyWithoutPostedByInput
 }
 
@@ -1401,15 +1008,6 @@ input UserUpdateWithoutGamesDataInput {
   name: String
   email: String
   password: String
-  links: LinkUpdateManyWithoutPostedByInput
-  favorite: FavoriteUpdateManyWithoutUserInput
-}
-
-input UserUpdateWithoutLinksDataInput {
-  name: String
-  email: String
-  password: String
-  games: GameUpdateManyWithoutPostedByInput
   favorite: FavoriteUpdateManyWithoutUserInput
 }
 
@@ -1421,11 +1019,6 @@ input UserUpsertWithoutFavoriteInput {
 input UserUpsertWithoutGamesInput {
   update: UserUpdateWithoutGamesDataInput!
   create: UserCreateWithoutGamesInput!
-}
-
-input UserUpsertWithoutLinksInput {
-  update: UserUpdateWithoutLinksDataInput!
-  create: UserCreateWithoutLinksInput!
 }
 
 input UserWhereInput {
@@ -1653,9 +1246,6 @@ input UserWhereInput {
   All values not ending with the given string.
   """
   password_not_ends_with: String
-  links_every: LinkWhereInput
-  links_some: LinkWhereInput
-  links_none: LinkWhereInput
   games_every: GameWhereInput
   games_some: GameWhereInput
   games_none: GameWhereInput

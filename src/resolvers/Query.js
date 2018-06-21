@@ -1,14 +1,15 @@
-async function feed(parent, args, context, info) {
+async function games(parent, args, context, info) {
   const where = args.filter
     ? {
       OR: [
-        { url_contains: args.filter },
+        { name_contains: args.filter },
         { description_contains: args.filter },
+        { url_contains: args.filter },
       ],
     }
     : {}
 
-  const queriedLinks = await context.db.query.links(
+  const queriedGames = await context.db.query.games(
     { where, skip: args.skip, first: args.first, orderBy: args.orderBy },
     `{ id }`,
   )
@@ -21,32 +22,15 @@ async function feed(parent, args, context, info) {
     }
   `
 
-  const linksConnection = await context.db.query.linksConnection({}, countSelectionSet)
+  const gamesConnection = await context.db.query.gamesConnection({}, countSelectionSet)
 
   return {
-    count: linksConnection.aggregate.count,
-    linkIds: queriedLinks.map(link => link.id),
+    count: gamesConnection.aggregate.count,
+    gameIds: queriedGames.map(game => game.id),
   }
-}
 
-async function games(parent, args, context, info) {
-  const where = args.filter
-    ? {
-      OR: [
-        { name_contains: args.filter },
-        { description_contains: args.filter },
-        { url_contains: args.filter },
-      ],
-    }
-    : {}
-
-  return context.db.query.games(
-    { where, skip: args.skip, first: args.first, orderBy: args.orderBy },
-    info,
-  )
 }
 
 module.exports = {
-  feed,
   games,
 }

@@ -1,12 +1,10 @@
 # import Link, LinkOrderByInput, Game, GameOrderByInput, Favorite, FavoriteSubscriptionPayload from "./generated/prisma.graphql"
 
 type Query {
-  feed(filter: String, skip: Int, first: Int, orderBy: LinkOrderByInput): Feed!
-  games(filter: String, skip: Int, first: Int, orderBy: GameOrderByInput): [Game!]!
+  games(filter: String, skip: Int, first: Int, orderBy: GameOrderByInput): Games!
 }
 
 type Mutation {
-  post(url: String!, description: String!): Link!
   signup(email: String!, password: String!, name: String!): AuthPayload
   login(email: String!, password: String!): AuthPayload
   postGame(name: String!, description: String, url: String): Game!
@@ -29,10 +27,9 @@ type User {
   id: ID!
   name: String!
   email: String!
-  links: [Link!]!
 }
 
-type Feed {
-  links: [Link!]!
+type Games {
   count: Int!
+  list: [Game!]!
 }
